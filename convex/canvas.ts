@@ -20,6 +20,7 @@ export const create = mutation({
       userId: identity.subject,
       userName: identity.name ?? "Unknown",
       elements: [],
+      updatedAt: Date.now(),
     })
 
     return canvasId

@@ -17,9 +17,9 @@ const CanvasSelection = ({ filter }: Props) => {
   }
 
   return (
-    <div className="flex flex-wrap gap-4 p-4">
+    <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
       <AddCanvas />
-      {canvases.map((canvas, index) => (
+      {canvases.map((canvas) => (
         <Canvas key={canvas._id} canvas={canvas} />
       ))}
     </div>
