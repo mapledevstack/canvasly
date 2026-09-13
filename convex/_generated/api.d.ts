@@ -8,13 +8,19 @@
  * @module
  */
 
+import type * as canvas from "../canvas.js";
+import type * as canvases from "../canvases.js";
+
 import type {
   ApiFromModules,
   FilterApi,
   FunctionReference,
 } from "convex/server";
 
-declare const fullApi: ApiFromModules<{}>;
+declare const fullApi: ApiFromModules<{
+  canvas: typeof canvas;
+  canvases: typeof canvases;
+}>;
 
 /**
  * A utility for referencing Convex functions in your app's public API.

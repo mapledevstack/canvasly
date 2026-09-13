@@ -1,10 +1,35 @@
+"use client"
+
+import { api } from "@/convex/_generated/api"
+import { useApiMutation } from "@/hooks/useApiMutation"
 import { LucidePlus } from "lucide-react"
+import { toast } from "../ui/toast"
 
-type Props = {}
+const AddCanvas = () => {
+  const { mutate: createCanvas, pending } = useApiMutation(api.canvas.create)
 
-const AddCanvas = (props: Props) => {
+  const handleClick = () => {
+    createCanvas({})
+      .then(() =>
+        toast.add({
+          type: "success",
+          description: "Canvas created",
+        })
+      )
+      .catch(() => {
+        toast.add({
+          type: "error",
+          description: "Failed to create Canvas",
+        })
+      })
+  }
+
   return (
-    <button className="flex aspect-4/3 h-46 w-64 flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 text-gray-400 transition hover:border-yellow-400 hover:bg-yellow-50 hover:text-yellow-500">
+    <button
+      className="flex aspect-4/3 h-46 w-64 flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 text-gray-400 transition hover:border-yellow-400 hover:bg-yellow-50 hover:text-yellow-500"
+      onClick={() => handleClick()}
+      disabled={pending}
+    >
       <LucidePlus size={28} />
       <span className="text-sm font-medium">New canvas</span>
     </button>
