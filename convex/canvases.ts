@@ -25,3 +25,19 @@ export const get = query({
       .collect()
   },
 })
+
+export const getFavorites = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity()
+
+    if (!identity) {
+      throw new Error("Unauthorized")
+    }
+
+    return await ctx.db
+      .query("userCanvasFavorites")
+      .withIndex("by_user", (q) => q.eq("userId", identity.subject))
+      .collect()
+  },
+})

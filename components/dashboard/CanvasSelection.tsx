@@ -11,16 +11,28 @@ type Props = {
 
 const CanvasSelection = ({ filter }: Props) => {
   const canvases = useQuery(api.canvases.get)
+  const favorites = useQuery(api.canvases.getFavorites)
 
-  if (canvases === undefined) {
+  const filteredCanvases =
+    filter === "starred"
+      ? canvases?.filter((canvas) =>
+          favorites?.some((fav) => fav.canvasId === canvas._id)
+        )
+      : canvases
+
+  if (filteredCanvases === undefined) {
     return <></>
   }
 
   return (
     <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
       <AddCanvas />
-      {canvases.map((canvas) => (
-        <Canvas key={canvas._id} canvas={canvas} />
+      {filteredCanvases.map((canvas) => (
+        <Canvas
+          key={canvas._id}
+          canvas={canvas}
+          isFavorited={favorites?.some((fav) => fav.canvasId === canvas._id)}
+        />
       ))}
     </div>
   )

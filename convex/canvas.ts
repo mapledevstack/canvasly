@@ -98,3 +98,34 @@ export const remove = mutation({
     await ctx.db.delete(args.id)
   },
 })
+
+export const toggleFav = mutation({
+  args: {
+    canvasId: v.id("canvases"),
+  },
+
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+
+    if (!identity) {
+      throw new Error("Unauthorized")
+    }
+
+    const existing = await ctx.db
+      .query("userCanvasFavorites")
+      .withIndex("by_user_canvas", (q) =>
+        q.eq("userId", identity.subject).eq("canvasId", args.canvasId)
+      )
+      .unique()
+
+    if (existing) {
+      await ctx.db.delete(existing._id)
+      return
+    }
+
+    await ctx.db.insert("userCanvasFavorites", {
+      userId: identity.subject,
+      canvasId: args.canvasId,
+    })
+  },
+})

@@ -15,4 +15,12 @@ export default defineSchema({
   })
     .index("by_org", ["orgId"])
     .index("by_user", ["userId"]),
+
+  userCanvasFavorites: defineTable({
+    userId: v.string(),
+    canvasId: v.id("canvases"),
+  })
+    .index("by_user", ["userId"])
+    .index("by_canvas", ["canvasId"])
+    .index("by_user_canvas", ["userId", "canvasId"]),
 })
