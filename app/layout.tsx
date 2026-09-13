@@ -4,6 +4,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 import { ConvexClientProvider } from "@/providers/convex-client-provider"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -30,7 +31,9 @@ export default function RootLayout({
     >
       <body>
         <ConvexClientProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <TooltipProvider>{children}</TooltipProvider>
+          </ThemeProvider>
         </ConvexClientProvider>
       </body>
     </html>
