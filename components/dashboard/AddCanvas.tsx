@@ -4,18 +4,23 @@ import { api } from "@/convex/_generated/api"
 import { useApiMutation } from "@/hooks/useApiMutation"
 import { LucidePlus } from "lucide-react"
 import { toast } from "../ui/toast"
+import { useRouter } from "next/navigation"
 
 const AddCanvas = () => {
   const { mutate: createCanvas, pending } = useApiMutation(api.canvas.create)
 
+  const router = useRouter()
+
   const handleClick = () => {
     createCanvas({})
-      .then(() =>
+      .then((canvasId) => {
         toast.add({
           type: "success",
           description: "Canvas created",
         })
-      )
+
+        router.push(`/canvas/${canvasId}`)
+      })
       .catch(() => {
         toast.add({
           type: "error",
