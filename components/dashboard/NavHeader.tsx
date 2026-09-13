@@ -1,7 +1,15 @@
-import { OrganizationSwitcher, UserButton } from "@clerk/nextjs"
+"use client"
+
+import {
+  OrganizationSwitcher,
+  UserButton,
+  InviteMembersButton,
+  useOrganization,
+} from "@clerk/nextjs"
 import Image from "next/image"
 import { Courgette } from "next/font/google"
 import Hint from "../ui/hint"
+import { LucidePlus } from "lucide-react"
 
 const courgette = Courgette({
   subsets: ["latin"],
@@ -10,6 +18,8 @@ const courgette = Courgette({
 })
 
 const NavHeader = () => {
+  const { organization } = useOrganization()
+
   return (
     <nav className="flex items-center justify-between p-4">
       <div className="flex items-center gap-4">
@@ -28,6 +38,17 @@ const NavHeader = () => {
       <div className="flex items-center gap-4">
         <Hint label="Switch organization">
           <OrganizationSwitcher />
+        </Hint>
+        <Hint label="Invite users">
+          {organization && (
+            <>
+              <InviteMembersButton
+                children={
+                  <LucidePlus className="rounded-sm bg-primary text-primary-foreground" />
+                }
+              />
+            </>
+          )}
         </Hint>
         <Hint label="User settings">
           <UserButton />

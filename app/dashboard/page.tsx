@@ -1,6 +1,19 @@
-import DashboardPage from "@/components/dashboard/DashboardPage"
+import CanvasSelection from "@/components/dashboard/CanvasSelection"
+import Filters from "@/components/dashboard/Filters"
 
-const page = () => {
-  return <DashboardPage />
+const DashboardPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ filter?: string }>
+}) => {
+  const { filter } = await searchParams
+
+  return (
+    <div>
+      <Filters filter={filter} />
+      <CanvasSelection filter={filter} />
+    </div>
+  )
 }
-export default page
+
+export default DashboardPage
