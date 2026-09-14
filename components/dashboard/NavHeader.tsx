@@ -35,7 +35,7 @@ const NavHeader = () => {
         </h1>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-6">
         <Hint label="Switch organization">
           <OrganizationSwitcher />
         </Hint>
@@ -51,7 +51,16 @@ const NavHeader = () => {
           )}
         </Hint>
         <Hint label="User settings">
-          <UserButton />
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: {
+                  width: "32px",
+                  height: "32px",
+                },
+              },
+            }}
+          />
         </Hint>
       </div>
     </nav>

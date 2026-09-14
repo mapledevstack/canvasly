@@ -1,5 +1,5 @@
 import { v } from "convex/values"
-import { mutation } from "./_generated/server"
+import { mutation, query } from "./_generated/server"
 
 export const create = mutation({
   args: {},
@@ -127,5 +127,40 @@ export const toggleFav = mutation({
       userId: identity.subject,
       canvasId: args.canvasId,
     })
+  },
+})
+
+export const getById = query({
+  args: {
+    id: v.id("canvases"),
+  },
+
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+
+    if (!identity) {
+      throw new Error("Unauthorized")
+    }
+
+    const canvas = await ctx.db.get(args.id)
+
+    if (!canvas) {
+      return null
+    }
+
+    const orgId =
+      typeof identity.org_id === "string" ? identity.org_id : undefined
+
+    // Personal canvas
+    if (!canvas.orgId) {
+      return canvas.userId === identity.subject ? canvas : null
+    }
+
+    // Organization canvas
+    if (canvas.orgId === orgId) {
+      return canvas
+    }
+
+    return null
   },
 })

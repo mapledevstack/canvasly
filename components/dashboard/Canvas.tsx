@@ -8,6 +8,7 @@ import { useApiMutation } from "@/hooks/useApiMutation"
 import { toast } from "../ui/toast"
 
 import { getTimeAgo } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 
 type Props = {
   canvas: Doc<"canvases">
@@ -23,7 +24,15 @@ const Canvas = ({ canvas, isFavorited }: Props) => {
     api.canvas.toggleFav
   )
 
-  const handleDelete = () => {
+  const router = useRouter()
+
+  const handleCanvasClick = () => {
+    router.push(`/canvas/${canvas._id}`)
+  }
+
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation()
+
     deleteCanvas({ id: canvas._id })
       .then(() =>
         toast.add({
@@ -39,7 +48,9 @@ const Canvas = ({ canvas, isFavorited }: Props) => {
       })
   }
 
-  const handleFav = () => {
+  const handleFav = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation()
+
     toggleFav({ canvasId: canvas._id }).catch(() => {
       toast.add({
         type: "error",
@@ -48,12 +59,19 @@ const Canvas = ({ canvas, isFavorited }: Props) => {
     })
   }
 
+  const handleShare = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation()
+  }
+
   return (
-    <div className="group relative flex aspect-4/3 flex-1 items-start justify-center overflow-hidden rounded-lg border border-gray-200 bg-white pb-1 font-bold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <div
+      className="group relative flex aspect-4/3 flex-1 cursor-pointer items-start justify-center overflow-hidden rounded-lg border border-gray-200 bg-white pb-1 font-bold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+      onClick={handleCanvasClick}
+    >
       <button
         className="absolute top-2 left-2 rounded-md p-1.5 text-yellow-500 transition hover:bg-yellow-50 hover:text-yellow-500"
         aria-label="Favourite canvas"
-        onClick={handleFav}
+        onClick={(e) => handleFav(e)}
         disabled={favPending}
       >
         <LucideStar size={16} fill={isFavorited ? "currentColor" : "none"} />
@@ -63,6 +81,7 @@ const Canvas = ({ canvas, isFavorited }: Props) => {
         <button
           className="rounded-md p-1.5 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800"
           aria-label="Share canvas"
+          onClick={(e) => handleShare(e)}
         >
           <LucideShare2 size={16} />
         </button>
@@ -70,7 +89,7 @@ const Canvas = ({ canvas, isFavorited }: Props) => {
         <button
           className="rounded-md p-1.5 text-gray-500 transition hover:bg-red-100 hover:text-red-500"
           aria-label="Delete canvas"
-          onClick={handleDelete}
+          onClick={(e) => handleDelete(e)}
           disabled={deletePending}
         >
           <LucideTrash2 size={16} />

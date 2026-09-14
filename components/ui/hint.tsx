@@ -7,7 +7,9 @@ type Props = {
 const hint = ({ children, label }: Props) => {
   return (
     <Tooltip>
-      <TooltipTrigger>{children}</TooltipTrigger>
+      <TooltipTrigger>
+        <div className="flex items-center">{children}</div>
+      </TooltipTrigger>
       <TooltipContent>
         <p>{label}</p>
       </TooltipContent>
