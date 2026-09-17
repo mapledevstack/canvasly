@@ -1,9 +1,9 @@
 "use client"
 
+import { toast } from "@/components/ui/toast"
 import { api } from "@/convex/_generated/api"
 import { useApiMutation } from "@/hooks/useApiMutation"
 import { LucidePlus } from "lucide-react"
-import { toast } from "../ui/toast"
 import { useRouter } from "next/navigation"
 
 const AddCanvas = () => {

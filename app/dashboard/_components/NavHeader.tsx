@@ -8,8 +8,9 @@ import {
 } from "@clerk/nextjs"
 import Image from "next/image"
 import { Courgette } from "next/font/google"
-import Hint from "../ui/hint"
+import Hint from "@/components/ui/hint"
 import { LucidePlus } from "lucide-react"
+import Link from "next/link"
 
 const courgette = Courgette({
   subsets: ["latin"],
@@ -22,18 +23,24 @@ const NavHeader = () => {
 
   return (
     <nav className="flex items-center justify-between p-4">
-      <div className="flex items-center gap-4">
-        <Image
-          src="/logo.svg"
-          alt="Canvasly Logo"
-          height={41}
-          width={67}
-          className="size-10 select-none"
-        />
-        <h1 className={`text-3xl font-bold ${courgette.className} select-none`}>
-          Canvasly~
-        </h1>
-      </div>
+      <Link href={"/"}>
+        <div className="flex items-center gap-4">
+          <Hint label="Back to Home">
+            <Image
+              src="/logo.svg"
+              alt="Canvasly Logo"
+              height={41}
+              width={67}
+              className="size-10 select-none"
+            />
+          </Hint>
+          <h1
+            className={`text-3xl font-bold ${courgette.className} select-none`}
+          >
+            Canvasly~
+          </h1>
+        </div>
+      </Link>
 
       <div className="flex items-center gap-6">
         <Hint label="Switch organization">

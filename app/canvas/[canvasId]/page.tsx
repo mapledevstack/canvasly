@@ -1,4 +1,4 @@
-import CanvasRoom from "@/components/canvas/CanvasRoom"
+import CanvasRoom from "@/app/canvas/[canvasId]/_components/CanvasRoom"
 
 type Props = {
   params: Promise<{ canvasId: string }>

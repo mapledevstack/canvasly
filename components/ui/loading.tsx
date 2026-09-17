@@ -6,6 +6,7 @@ export const Loading = () => {
       <Image
         src="/logo.svg"
         alt="Logo"
+        loading="eager"
         height={41}
         width={67}
         className="size-20 animate-pulse duration-700"

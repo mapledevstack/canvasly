@@ -1,14 +1,19 @@
-import NavHeader from "@/components/dashboard/NavHeader"
+import NavHeader from "./_components/NavHeader"
 
 type Props = {
   children: React.ReactNode
 }
 const layout = ({ children }: Props) => {
   return (
-    <>
-      <NavHeader />
-      {children}
-    </>
+    <div>
+      <header>
+        <nav>
+          <NavHeader />
+        </nav>
+      </header>
+
+      <main>{children}</main>
+    </div>
   )
 }
 export default layout

@@ -1,5 +1,5 @@
-import CanvasSelection from "@/components/dashboard/CanvasSelection"
-import Filters from "@/components/dashboard/Filters"
+import CanvasSelection from "./_components/CanvasSelection"
+import Filters from "./_components/Filters"
 
 const DashboardPage = async ({
   searchParams,

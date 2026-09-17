@@ -5,17 +5,16 @@ import { api } from "@/convex/_generated/api"
 
 import { useApiMutation } from "@/hooks/useApiMutation"
 
-import { toast } from "../ui/toast"
-
 import { getTimeAgo } from "@/lib/utils"
 import { useRouter } from "next/navigation"
+import { toast } from "@/components/ui/toast"
 
 type Props = {
   canvas: Doc<"canvases">
   isFavorited: boolean | undefined
 }
 
-const Canvas = ({ canvas, isFavorited }: Props) => {
+const CanvasPreview = ({ canvas, isFavorited }: Props) => {
   const { mutate: deleteCanvas, pending: deletePending } = useApiMutation(
     api.canvas.remove
   )
@@ -107,4 +106,4 @@ const Canvas = ({ canvas, isFavorited }: Props) => {
   )
 }
 
-export default Canvas
+export default CanvasPreview
