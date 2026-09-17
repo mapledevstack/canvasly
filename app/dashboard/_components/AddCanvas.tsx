@@ -7,7 +7,9 @@ import { LucidePlus } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 const AddCanvas = () => {
-  const { mutate: createCanvas, pending } = useApiMutation(api.canvas.create)
+  const { mutate: createCanvas, pending } = useApiMutation(
+    api.canvas.createCanvas
+  )
 
   const router = useRouter()
 

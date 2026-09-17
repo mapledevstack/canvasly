@@ -17,11 +17,11 @@ type Props = {
 
 const CanvasPreview = ({ canvas, isFavorited }: Props) => {
   const { mutate: deleteCanvas, pending: deletePending } = useApiMutation(
-    api.canvas.remove
+    api.canvas.deleteCanvas
   )
 
   const { mutate: toggleFav, pending: favPending } = useApiMutation(
-    api.canvas.toggleFav
+    api.canvas.toggleCanvasFavorite
   )
 
   const router = useRouter()

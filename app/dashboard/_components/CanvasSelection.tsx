@@ -11,37 +11,30 @@ type Props = {
 }
 
 const CanvasSelection = ({ filter }: Props) => {
-  const canvases = useQuery(api.canvases.get)
-  const favorites = useQuery(api.canvases.getFavorites)
+  const allCanvases = useQuery(api.canvases.getAllCanvases)
 
-  const isLoading = canvases === undefined || favorites === undefined
-
-  const filteredCanvases =
-    filter === "starred"
-      ? canvases?.filter((canvas) =>
-          favorites?.some((fav) => fav.canvasId === canvas._id)
-        )
-      : canvases
-
+  const canvasesToDisplay =
+    allCanvases === undefined
+      ? undefined
+      : filter === "starred"
+        ? allCanvases.filter((canvas) => canvas.isFavorited)
+        : allCanvases
   return (
     <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
       <AddCanvas />
-      {isLoading
+      {canvasesToDisplay === undefined
         ? Array.from({ length: 5 }, (_, index) => (
             <CanvasPreviewSkeleton key={index} />
           ))
-        : filteredCanvases
-            ?.sort((a, b) => b.updatedAt - a.updatedAt)
-            .map((canvas) => (
-              <CanvasPreview
-                key={canvas._id}
-                canvas={canvas}
-                isFavorited={favorites?.some(
-                  (fav) => fav.canvasId === canvas._id
-                )}
-              />
-            ))}
+        : canvasesToDisplay.map((canvas) => (
+            <CanvasPreview
+              key={canvas._id}
+              canvas={canvas}
+              isFavorited={canvas.isFavorited}
+            />
+          ))}
     </div>
   )
 }
+
 export default CanvasSelection

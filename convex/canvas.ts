@@ -1,7 +1,8 @@
 import { v } from "convex/values"
+
 import { mutation, query } from "./_generated/server"
 
-export const create = mutation({
+export const createCanvas = mutation({
   args: {},
 
   handler: async (ctx) => {
@@ -18,7 +19,6 @@ export const create = mutation({
       name: "Untitled",
       orgId,
       userId: identity.subject,
-      userName: identity.name ?? "Unknown",
       elements: [],
       updatedAt: Date.now(),
     })
@@ -27,7 +27,7 @@ export const create = mutation({
   },
 })
 
-export const updateElements = mutation({
+export const updateCanvasElements = mutation({
   args: {
     id: v.id("canvases"),
     elements: v.any(),
@@ -48,11 +48,12 @@ export const updateElements = mutation({
 
     await ctx.db.patch(args.id, {
       elements: args.elements,
+      updatedAt: Date.now(),
     })
   },
 })
 
-export const updateImageUrl = mutation({
+export const updateCanvasImage = mutation({
   args: {
     id: v.id("canvases"),
     imageUrl: v.string(),
@@ -73,11 +74,12 @@ export const updateImageUrl = mutation({
 
     await ctx.db.patch(args.id, {
       imageUrl: args.imageUrl,
+      updatedAt: Date.now(),
     })
   },
 })
 
-export const remove = mutation({
+export const deleteCanvas = mutation({
   args: {
     id: v.id("canvases"),
   },
@@ -99,7 +101,7 @@ export const remove = mutation({
   },
 })
 
-export const toggleFav = mutation({
+export const toggleCanvasFavorite = mutation({
   args: {
     canvasId: v.id("canvases"),
   },
@@ -130,7 +132,7 @@ export const toggleFav = mutation({
   },
 })
 
-export const getById = query({
+export const getCanvas = query({
   args: {
     id: v.id("canvases"),
   },

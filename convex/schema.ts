@@ -4,17 +4,17 @@ import { defineSchema, defineTable } from "convex/server"
 export default defineSchema({
   canvases: defineTable({
     name: v.string(),
-    orgId: v.optional(v.string()),
+
     userId: v.string(),
-    userName: v.string(),
+    orgId: v.optional(v.string()),
 
     elements: v.any(),
 
     imageUrl: v.optional(v.string()),
     updatedAt: v.number(),
   })
-    .index("by_org", ["orgId"])
-    .index("by_user", ["userId"]),
+    .index("by_user", ["userId", "updatedAt"])
+    .index("by_org", ["orgId", "updatedAt"]),
 
   userCanvasFavorites: defineTable({
     userId: v.string(),
