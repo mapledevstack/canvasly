@@ -95,7 +95,7 @@ const CanvasPreview = ({ canvas, isFavorited }: Props) => {
         </button>
       </div>
 
-      <div className="flex h-full flex-col items-center justify-between py-3">
+      <div className="flex h-full flex-col items-center justify-between py-3 text-gray-500">
         <div>{canvas.name}</div>
 
         <div className="text-xs font-normal text-gray-400">
