@@ -1,6 +1,6 @@
 "use client"
 
-import { useQuery } from "convex/react"
+import { useConvexAuth, useQuery } from "convex/react"
 import AddCanvas from "./AddCanvas"
 import CanvasPreview from "./CanvasPreview"
 import { api } from "@/convex/_generated/api"
@@ -11,7 +11,11 @@ type Props = {
 }
 
 const CanvasSelection = ({ filter }: Props) => {
-  const allCanvases = useQuery(api.canvases.getAllCanvases)
+  const { isAuthenticated } = useConvexAuth()
+  const allCanvases = useQuery(
+    api.canvases.getAllCanvases,
+    isAuthenticated ? {} : "skip"
+  )
 
   const canvasesToDisplay =
     allCanvases === undefined
