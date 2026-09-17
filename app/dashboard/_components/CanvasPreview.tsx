@@ -8,6 +8,7 @@ import { useApiMutation } from "@/hooks/useApiMutation"
 import { getTimeAgo } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { toast } from "@/components/ui/toast"
+import DeleteAlert from "@/components/ui/delete-alert"
 
 type Props = {
   canvas: Doc<"canvases">
@@ -29,9 +30,7 @@ const CanvasPreview = ({ canvas, isFavorited }: Props) => {
     router.push(`/canvas/${canvas._id}`)
   }
 
-  const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation()
-
+  const handleDelete = () => {
     deleteCanvas({ id: canvas._id })
       .then(() =>
         toast.add({
@@ -58,9 +57,7 @@ const CanvasPreview = ({ canvas, isFavorited }: Props) => {
     })
   }
 
-  const handleShare = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation()
-  }
+  const handleShare = () => {}
 
   return (
     <div
@@ -76,23 +73,27 @@ const CanvasPreview = ({ canvas, isFavorited }: Props) => {
         <LucideStar size={16} fill={isFavorited ? "currentColor" : "none"} />
       </button>
 
-      <div className="absolute top-2 right-2 flex flex-col gap-1">
+      <div
+        className="absolute top-2 right-2 flex flex-col gap-1"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
           className="rounded-md p-1.5 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800"
           aria-label="Share canvas"
-          onClick={(e) => handleShare(e)}
+          onClick={handleShare}
         >
           <LucideShare2 size={16} />
         </button>
 
-        <button
-          className="rounded-md p-1.5 text-gray-500 transition hover:bg-red-100 hover:text-red-500"
-          aria-label="Delete canvas"
-          onClick={(e) => handleDelete(e)}
-          disabled={deletePending}
-        >
-          <LucideTrash2 size={16} />
-        </button>
+        <DeleteAlert onClick={handleDelete}>
+          <button
+            className="rounded-md p-1.5 text-gray-500 transition hover:bg-red-100 hover:text-red-500"
+            aria-label="Delete canvas"
+            disabled={deletePending}
+          >
+            <LucideTrash2 size={16} />
+          </button>
+        </DeleteAlert>
       </div>
 
       <div className="flex h-full flex-col items-center justify-between py-3 text-gray-500">

@@ -59,6 +59,7 @@ const NavHeader = () => {
         </Hint>
         <Hint label="User settings">
           <UserButton
+            afterSwitchSessionUrl="/"
             appearance={{
               elements: {
                 avatarBox: {
