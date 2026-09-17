@@ -57,6 +57,7 @@ const CanvasPreview = ({ canvas, isFavorited }: Props) => {
     })
   }
 
+  // TO-DO
   const handleShare = () => {}
 
   return (

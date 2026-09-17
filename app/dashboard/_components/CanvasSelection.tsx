@@ -30,15 +30,17 @@ const CanvasSelection = ({ filter }: Props) => {
         ? Array.from({ length: 5 }, (_, index) => (
             <CanvasPreviewSkeleton key={index} />
           ))
-        : filteredCanvases?.map((canvas) => (
-            <CanvasPreview
-              key={canvas._id}
-              canvas={canvas}
-              isFavorited={favorites?.some(
-                (fav) => fav.canvasId === canvas._id
-              )}
-            />
-          ))}
+        : filteredCanvases
+            ?.sort((a, b) => b.updatedAt - a.updatedAt)
+            .map((canvas) => (
+              <CanvasPreview
+                key={canvas._id}
+                canvas={canvas}
+                isFavorited={favorites?.some(
+                  (fav) => fav.canvasId === canvas._id
+                )}
+              />
+            ))}
     </div>
   )
 }
