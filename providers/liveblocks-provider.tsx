@@ -1,6 +1,6 @@
 "use client"
 
-import { LiveblocksProvider } from "@liveblocks/react"
+import { LiveblocksProvider } from "@liveblocks/react/suspense"
 
 type Props = {
   children: React.ReactNode
@@ -8,7 +8,7 @@ type Props = {
 
 const LiveblocksProviderWrapper = ({ children }: Props) => {
   return (
-    <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
+    <LiveblocksProvider authEndpoint="/api/liveblocks-auth" throttle={16}>
       {children}
     </LiveblocksProvider>
   )
