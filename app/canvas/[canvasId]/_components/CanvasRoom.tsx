@@ -41,9 +41,7 @@ const CanvasRoom = ({ canvasId }: Props) => {
     )
   }
 
-  const elements = (canvas.elements ?? []) as OrderedExcalidrawElement[]
-
-  return <CanvasEditor canvasId={canvasId} initialElements={elements} />
+  return <CanvasEditor canvasId={canvasId} />
 }
 
 export default CanvasRoom

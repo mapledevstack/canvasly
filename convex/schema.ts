@@ -8,8 +8,6 @@ export default defineSchema({
     userId: v.string(),
     orgId: v.optional(v.string()),
 
-    elements: v.any(),
-
     imageUrl: v.optional(v.string()),
     updatedAt: v.number(),
   })

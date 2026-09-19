@@ -19,37 +19,10 @@ export const createCanvas = mutation({
       name: "Untitled",
       orgId,
       userId: identity.subject,
-      elements: [],
       updatedAt: Date.now(),
     })
 
     return canvasId
-  },
-})
-
-export const updateCanvasElements = mutation({
-  args: {
-    id: v.id("canvases"),
-    elements: v.any(),
-  },
-
-  handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity()
-
-    if (!identity) {
-      throw new Error("Unauthorized")
-    }
-
-    const canvas = await ctx.db.get(args.id)
-
-    if (!canvas) {
-      throw new Error("Canvas not found")
-    }
-
-    await ctx.db.patch(args.id, {
-      elements: args.elements,
-      updatedAt: Date.now(),
-    })
   },
 })
 
