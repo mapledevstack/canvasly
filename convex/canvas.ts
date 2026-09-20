@@ -52,6 +52,32 @@ export const updateCanvasImage = mutation({
   },
 })
 
+export const updateCanvasName = mutation({
+  args: {
+    id: v.id("canvases"),
+    name: v.string(),
+  },
+
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+
+    if (!identity) {
+      throw new Error("Unauthorized")
+    }
+
+    const canvas = await ctx.db.get(args.id)
+
+    if (!canvas) {
+      throw new Error("Canvas not found")
+    }
+
+    await ctx.db.patch(args.id, {
+      name: args.name,
+      updatedAt: Date.now(),
+    })
+  },
+})
+
 export const deleteCanvas = mutation({
   args: {
     id: v.id("canvases"),
