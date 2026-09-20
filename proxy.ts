@@ -3,7 +3,7 @@ import { clerkMiddleware } from "@clerk/nextjs/server"
 export default clerkMiddleware(async (auth, req) => {
   const { pathname } = req.nextUrl
 
-  if (pathname !== "/") {
+  if (pathname !== "/" && !pathname.startsWith("/share")) {
     await auth.protect()
   }
 })
