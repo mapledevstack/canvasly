@@ -165,3 +165,26 @@ export const getCanvas = query({
     return null
   },
 })
+
+export const touchCanvas = mutation({
+  args: {
+    id: v.id("canvases"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+
+    if (!identity) {
+      throw new Error("Unauthorized")
+    }
+
+    const canvas = await ctx.db.get(args.id)
+
+    if (!canvas) {
+      throw new Error("Canvas not found")
+    }
+
+    await ctx.db.patch(args.id, {
+      updatedAt: Date.now(),
+    })
+  },
+})

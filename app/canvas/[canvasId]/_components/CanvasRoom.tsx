@@ -1,18 +1,15 @@
 "use client"
 
 import dynamic from "next/dynamic"
+import { useEffect } from "react"
 
-import { useQuery } from "convex/react"
+import { useMutation, useQuery } from "convex/react"
 
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 
 import Loading from "@/components/ui/loading"
 
-/*
- * Excalidraw reads DOM globals (`Element`) while being imported, so the editor
- * can only ever be loaded in the browser.
- */
 const CanvasEditor = dynamic(() => import("./CanvasEditor"), {
   ssr: false,
   loading: () => <Loading />,
@@ -26,6 +23,16 @@ const CanvasRoom = ({ canvasId }: Props) => {
   const canvas = useQuery(api.canvas.getCanvas, {
     id: canvasId as Id<"canvases">,
   })
+
+  const touchCanvas = useMutation(api.canvas.touchCanvas)
+
+  useEffect(() => {
+    return () => {
+      touchCanvas({
+        id: canvasId as Id<"canvases">,
+      })
+    }
+  }, [canvasId, touchCanvas])
 
   if (canvas === undefined) {
     return <Loading />
