@@ -31,17 +31,13 @@ const CanvasEditor = ({ canvasId }: Props) => {
   const suppressEchoUntilRef = useRef(0)
   const sendTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const suppressTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const pendingElementsRef = useRef<readonly OrderedExcalidrawElement[] | null>(
-    null
-  )
+  const pendingElementsRef = useRef<readonly OrderedExcalidrawElement[] | null>(null)
 
   const theme = resolvedTheme === "dark" ? "dark" : "light"
 
   const applyRemoteElements = useCallback(
     (nextElements: readonly OrderedExcalidrawElement[]) => {
       if (excalidrawAPIRef.current) {
-        // updateScene() triggers onChange() asynchronously, so suppress the
-        // echo with a short time window instead of a microtask flag.
         suppressEchoUntilRef.current = Date.now() + 500
         excalidrawAPIRef.current.updateScene({ elements: nextElements })
 
@@ -53,8 +49,6 @@ const CanvasEditor = ({ canvasId }: Props) => {
           suppressTimeoutRef.current = null
         }, 500)
       } else {
-        // Editor is not ready yet; keep the newest snapshot so initialData
-        // does not render stale content.
         setElements(nextElements)
       }
     },
@@ -80,9 +74,6 @@ const CanvasEditor = ({ canvasId }: Props) => {
       const restoredElements = restoreElements(parsed.data.elements, null)
 
       if (parsed.data.type === "canvas:init") {
-        // First snapshot for this client. If the editor is already mounted
-        // (e.g. after a reconnect), apply it directly so the local scene
-        // cannot stay stale.
         if (excalidrawAPIRef.current) {
           applyRemoteElements(restoredElements)
           return
@@ -92,17 +83,11 @@ const CanvasEditor = ({ canvasId }: Props) => {
         return
       }
 
-      // Remote updates from other clients.
       applyRemoteElements(restoredElements)
     },
     [applyRemoteElements]
   )
 
-  // The socket is created here (rather than in CanvasRoom) so the
-  // `canvas:init` snapshot sent by the server on connect cannot arrive
-  // before this component's message listener is attached. Creating it
-  // earlier (e.g. while the editor bundle is still loading) would drop
-  // that first message and leave the editor stuck on <Loading />.
   const socket = usePartySocket({
     host: env.NEXT_PUBLIC_PARTY_HOST,
     party: "canvas-server",
@@ -127,8 +112,6 @@ const CanvasEditor = ({ canvasId }: Props) => {
         return
       }
 
-      // Excalidraw fires onChange on every frame while drawing; debounce
-      // network + storage writes and only send the latest snapshot.
       pendingElementsRef.current = nextElements
 
       if (sendTimeoutRef.current) {
