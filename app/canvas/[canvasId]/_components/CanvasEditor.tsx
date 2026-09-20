@@ -104,7 +104,8 @@ const CanvasEditor = ({ canvasId }: Props) => {
   // earlier (e.g. while the editor bundle is still loading) would drop
   // that first message and leave the editor stuck on <Loading />.
   const socket = usePartySocket({
-    host: env.NEXT_PUBLIC_PARTYKIT_HOST,
+    host: env.NEXT_PUBLIC_PARTY_HOST,
+    party: "canvas-server",
     room: canvasId,
     onMessage: handleMessage,
   })

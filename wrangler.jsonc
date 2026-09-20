@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "canvasly-party",
+  "main": "party/index.ts",
+  "compatibility_date": "2026-09-20",
+
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "CANVAS_SERVER",
+        "class_name": "CanvasServer",
+      },
+    ],
+  },
+
+  "exports": {
+    "CanvasServer": {
+      "type": "durable-object",
+      "storage": "sqlite",
+    },
+  },
+}

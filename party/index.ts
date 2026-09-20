@@ -1,4 +1,9 @@
-import type * as Party from "partykit/server"
+import {
+  Server,
+  routePartykitRequest,
+  type Connection,
+  type WSMessage,
+} from "partyserver"
 
 import {
   CanvasInitMessageSchema,
@@ -6,30 +11,32 @@ import {
   type Elements,
 } from "../app/types"
 
-export default class Server implements Party.Server {
-  constructor(readonly room: Party.Room) {}
-
+export class CanvasServer extends Server {
   elements: Elements = []
 
-  async onStart() {
-    this.elements = (await this.room.storage.get<Elements>("elements")) ?? []
+  private storage: DurableObjectStorage
+
+  constructor(ctx: DurableObjectState, env: Env) {
+    super(ctx, env)
+    this.storage = ctx.storage
   }
 
-  onConnect(conn: Party.Connection) {
-    console.log(`Client ${conn.id} connected to room ${this.room.id}`)
+  async onStart() {
+    this.elements = (await this.storage.get<Elements>("elements")) ?? []
+  }
+
+  onConnect(connection: Connection) {
+    console.log(`Client ${connection.id} connected to room ${this.name}`)
 
     const message = CanvasInitMessageSchema.parse({
       type: "canvas:init",
       elements: this.elements,
     })
 
-    conn.send(JSON.stringify(message))
+    connection.send(JSON.stringify(message))
   }
 
-  async onMessage(
-    message: string | ArrayBuffer | ArrayBufferView,
-    sender: Party.Connection
-  ) {
+  async onMessage(connection: Connection, message: WSMessage) {
     if (typeof message !== "string") {
       return
     }
@@ -50,8 +57,17 @@ export default class Server implements Party.Server {
 
     this.elements = parsed.data.elements
 
-    await this.room.storage.put("elements", this.elements)
+    await this.storage.put("elements", this.elements)
 
-    this.room.broadcast(JSON.stringify(parsed.data), [sender.id])
+    this.broadcast(JSON.stringify(parsed.data), [connection.id])
   }
+}
+
+export default {
+  async fetch(request: Request, env: Env) {
+    return (
+      (await routePartykitRequest(request, env)) ??
+      new Response("Not Found", { status: 404 })
+    )
+  },
 }
