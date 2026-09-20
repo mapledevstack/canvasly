@@ -6,6 +6,7 @@ import dynamic from "next/dynamic"
 import "@excalidraw/excalidraw/index.css"
 
 import CTA from "./_components/CTA"
+import { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types"
 
 type SceneData = Awaited<
   ReturnType<typeof import("@excalidraw/excalidraw").loadFromBlob>
@@ -16,8 +17,12 @@ const Excalidraw = dynamic(
   { ssr: false }
 )
 
+const TARGET_ID = "r-brWxUSyuR9GeJr7mHYd"
+
 const Home = () => {
   const [initialData, setInitialData] = useState<SceneData | null>(null)
+  const [excalidrawAPI, setExcalidrawAPI] =
+    useState<ExcalidrawImperativeAPI | null>(null)
 
   useEffect(() => {
     const loadScene = async () => {
@@ -34,10 +39,33 @@ const Home = () => {
     loadScene()
   }, [])
 
+  useEffect(() => {
+    if (!initialData || !excalidrawAPI) return
+
+    const target = initialData.elements.find(
+      (element) => element.id === TARGET_ID
+    )
+
+    if (!target) return
+
+    requestAnimationFrame(() => {
+      excalidrawAPI.scrollToContent([target], {
+        fitToContent: false,
+        animate: false,
+      })
+    })
+  }, [initialData, excalidrawAPI])
+
   return (
     <div className="relative h-full w-full overflow-hidden">
       <div className="absolute inset-0 z-0 h-full w-full">
-        {initialData && <Excalidraw theme="dark" initialData={initialData} />}
+        {initialData && (
+          <Excalidraw
+            theme="dark"
+            initialData={initialData}
+            excalidrawAPI={setExcalidrawAPI}
+          />
+        )}
       </div>
 
       <CTA />

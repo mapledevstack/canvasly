@@ -28,7 +28,7 @@
       "version": 81,
       "versionNonce": 73312860,
       "isDeleted": false,
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1789919306236,
       "link": null,
       "locked": false
@@ -1480,36 +1480,6 @@
       "autoResize": true,
       "lineHeight": 1.25,
       "labelPosition": null
-    },
-    {
-      "id": "FAbIJBLBiI8RgzJJAzAq7",
-      "type": "rectangle",
-      "x": -112.19993019104004,
-      "y": -30.821400403200414,
-      "width": 1714.0000247955322,
-      "height": 854.0000200271606,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "hachure",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ac",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1506789319,
-      "version": 231,
-      "versionNonce": 1391881575,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1789918791575,
-      "link": null,
-      "locked": false
     }
   ],
   "appState": {
