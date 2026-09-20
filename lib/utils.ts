@@ -17,3 +17,5 @@ export const getTimeAgo = (timestamp: number) => {
   const months = Math.floor(days / 30)
   return `${months}mo ago`
 }
+
+export const oneWeekFromNow = () => Date.now() + 7 * 24 * 60 * 60 * 1000

@@ -36,6 +36,29 @@ export class CanvasServer extends Server {
     connection.send(JSON.stringify(message))
   }
 
+  async onRequest(request: Request) {
+    const headers = {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    }
+
+    if (request.method === "GET") {
+      const elements = (await this.storage.get<Elements>("elements")) ?? []
+
+      return new Response(JSON.stringify({ elements }), {
+        status: 200,
+        headers,
+      })
+    }
+
+    return new Response("Method not allowed", {
+      status: 405,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+  }
+
   async onMessage(connection: Connection, message: WSMessage) {
     if (typeof message !== "string") {
       return

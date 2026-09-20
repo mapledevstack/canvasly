@@ -21,4 +21,9 @@ export default defineSchema({
     .index("by_user", ["userId"])
     .index("by_canvas", ["canvasId"])
     .index("by_user_canvas", ["userId", "canvasId"]),
+
+  shares: defineTable({
+    elements: v.any(),
+    expiresAt: v.number(),
+  }),
 })

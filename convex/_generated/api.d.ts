@@ -10,6 +10,7 @@
 
 import type * as canvas from "../canvas.js";
 import type * as canvases from "../canvases.js";
+import type * as share from "../share.js";
 
 import type {
   ApiFromModules,
@@ -20,6 +21,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   canvas: typeof canvas;
   canvases: typeof canvases;
+  share: typeof share;
 }>;
 
 /**

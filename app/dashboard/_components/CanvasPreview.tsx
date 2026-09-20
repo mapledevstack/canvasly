@@ -9,6 +9,8 @@ import { getTimeAgo } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { toast } from "@/components/ui/toast"
 import DeleteAlert from "@/components/ui/delete-alert"
+import { getCanvasElements } from "@/lib/party"
+import ShareCanvas from "./ShareCanvas"
 
 type Props = {
   canvas: Doc<"canvases">
@@ -22,6 +24,10 @@ const CanvasPreview = ({ canvas, isFavorited }: Props) => {
 
   const { mutate: toggleFav, pending: favPending } = useApiMutation(
     api.canvas.toggleCanvasFavorite
+  )
+
+  const { mutate: createShare, pending: sharePending } = useApiMutation(
+    api.share.createShare
   )
 
   const router = useRouter()
@@ -57,8 +63,17 @@ const CanvasPreview = ({ canvas, isFavorited }: Props) => {
     })
   }
 
-  // TO-DO
-  const handleShare = () => {}
+  const handleShare = async () => {
+    try {
+      const elements = await getCanvasElements(canvas._id)
+
+      const shareId = await createShare({ elements })
+
+      router.push(`/share/${shareId}`)
+    } catch (error) {
+      console.error("Failed to create share:", error)
+    }
+  }
 
   return (
     <div
@@ -78,13 +93,7 @@ const CanvasPreview = ({ canvas, isFavorited }: Props) => {
         className="absolute top-2 right-2 flex flex-col gap-1"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          className="rounded-md p-1.5 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800"
-          aria-label="Share canvas"
-          onClick={handleShare}
-        >
-          <LucideShare2 size={16} />
-        </button>
+        <ShareCanvas canvasId={canvas._id} />
 
         <DeleteAlert onClick={handleDelete}>
           <button

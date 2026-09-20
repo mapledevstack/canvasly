@@ -4,7 +4,9 @@ import type { ExcalidrawElement } from "@excalidraw/excalidraw/element/types"
 
 export type Elements = readonly ExcalidrawElement[]
 
-const ElementsSchema = z.array(z.unknown()) as unknown as z.ZodType<Elements>
+export const ElementsSchema = z.array(
+  z.unknown()
+) as unknown as z.ZodType<Elements>
 
 export const CanvasInitMessageSchema = z.object({
   type: z.literal("canvas:init"),
@@ -30,5 +32,9 @@ export const CanvasMessageSchema = z.discriminatedUnion("type", [
   CanvasInitMessageSchema,
   CanvasUpdateMessageSchema,
 ])
+
+export const CanvasSnapshotSchema = z.object({
+  elements: ElementsSchema,
+})
 
 export type CanvasMessage = CanvasInitMessage | CanvasUpdateMessage
