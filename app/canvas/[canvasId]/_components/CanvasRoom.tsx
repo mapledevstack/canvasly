@@ -9,8 +9,6 @@ import { Id } from "@/convex/_generated/dataModel"
 
 import Loading from "@/components/ui/loading"
 
-import type { OrderedExcalidrawElement } from "@excalidraw/excalidraw/element/types"
-
 /*
  * Excalidraw reads DOM globals (`Element`) while being imported, so the editor
  * can only ever be loaded in the browser.

@@ -11,7 +11,7 @@ export const env = createEnv({
     NEXT_PUBLIC_CONVEX_URL: z.url(),
     NEXT_PUBLIC_CONVEX_SITE_URL: z.url(),
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
-    NEXT_PUBLIC_PARTYKIT_HOST: z.url(),
+    NEXT_PUBLIC_PARTYKIT_HOST: z.string().min(1),
   },
 
   runtimeEnv: {

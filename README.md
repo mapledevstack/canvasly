@@ -21,4 +21,5 @@ import { Button } from "@/components/ui/button";
 ```
 
 To-do:
-[ ] Don't query elements in CanvasSelection
+[x] Don't query elements in CanvasSelection
+[ ] Exiting canvas updates 'updatedAt'
